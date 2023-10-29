@@ -21,6 +21,8 @@ class People(Sprite):
         self.image = self.__sprite_list[self.index_initial_character]
         self.rect = self.image.get_rect(x=280, y=self.__pos_init)
         self.rect.y = random.randrange(50, 720 - 100)
+        self.sound = pygame.mixer.Sound('src/sound/people.wav')
+        self.sound.set_volume(1)
 
     def __reborn(self):
         self.rect.x = 1280
@@ -31,6 +33,7 @@ class People(Sprite):
         if self.rect.topright[0] < 0:
             self.__reborn()
         elif self.rect.colliderect(self.__character):
+            self.sound.play()
             self.__reborn()
             self.__character.points += 50
         self.rect.x -= self.__velocity
