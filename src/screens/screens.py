@@ -82,28 +82,28 @@ class Screens():
 
             pygame.display.update()
 
-def config_sound(self, is_enabled):
-    title_font = pygame.font.Font("src/fonts/font.ttf", 40)
-    title = title_font.render("Configurações", True, COLORS["black"])
-    config_button = Button(pygame.image.load("src/imgs/background_buttom.png"), "Ligar/Desligar", 640, 320, 1)
+    def config_sound(self, is_enabled):
+        title_font = pygame.font.Font("src/fonts/font.ttf", 40)
+        title = title_font.render("Configurações", True, COLORS["black"])
+        config_button = Button(pygame.image.load("src/imgs/background_buttom.png"), "Ligar/Desligar", 640, 320, 1)
 
-    self.__screen.fill(COLORS["primary"])
-    self.__screen.blit(title, (360, 50))
-    config_button.update(self.__screen)
+        self.__screen.fill(COLORS["primary"])
+        self.__screen.blit(title, (360, 50))
+        config_button.update(self.__screen)
 
-    while True:
-        self.__position_mouse = pygame.mouse.get_pos()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and config_button.checkForInput(self.__position_mouse):
-                if is_enabled:
-                    pygame.mixer.music.pause()
-                else:
-                    pygame.mixer.music.unpause()
+        while True:
+            self.__position_mouse = pygame.mouse.get_pos()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and config_button.checkForInput(self.__position_mouse):
+                    if is_enabled:
+                        pygame.mixer.music.pause()
+                    else:
+                        pygame.mixer.music.unpause()
 
-        pygame.display.update()
+            pygame.display.update()
 
     def instructions(self):
         title = pygame.font.Font("src/fonts/font.ttf", 40).render("Instruções", True, COLORS["black"])
@@ -123,15 +123,13 @@ def config_sound(self, is_enabled):
 
         play.update(self.__screen)
 
-        running = True
-        while running:
+        while True:
             self.__position_mouse = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if play.checkForInput(self.__position_mouse):
-                        self.first_phase()
+                if event.type == pygame.MOUSEBUTTONDOWN and play.checkForInput(self.__position_mouse):
+                    self.first_phase()
 
             pygame.display.update()
