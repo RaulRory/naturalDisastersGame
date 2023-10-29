@@ -8,18 +8,20 @@ from src.components.rain import Rain
 
 
 class BackGround(Sprite):
-    def __init__(self):
+    def __init__(self, screen):
         super().__init__()
-        scale = 1.2
+        self.scale = 1.2
+        self.__screen = screen
         self.image = pygame.image.load('src/imgs/background.png')
-        self.image = pygame.transform.scale(self.image, (int(self.image.get_width() * scale), (int(self.image.get_height() * scale))))
+        self.image = pygame.transform.scale(self.image, (int(self.image.get_width() * self.scale) , (int(self.image.get_height() * self.scale))))
         self.rect = self.image.get_rect()
 
     def update(self):
-        if self.rect.x < -690:
+        self.__screen.blit(self.image, (int(self.image.get_width()) + self.rect.x, 0))
+        if self.rect.x == -int(self.image.get_width()):
+            self.__screen.blit(self.image, (int(self.image.get_width()) + self.rect.x, 0))
             self.rect.x = 0
         self.rect.x -= 3
-
 
 class Screens():
     def __init__(self, screen) -> None:
@@ -28,7 +30,7 @@ class Screens():
 
     def first_phase(self):
 
-        background = BackGround()
+        background = BackGround(self.__screen)
         protagonist = Character(self.__screen)
         people = People(protagonist)
 
@@ -80,30 +82,28 @@ class Screens():
 
             pygame.display.update()
 
-    def config_sound(self, is_enabled):
-        title = pygame.font.Font("src/fonts/font.ttf", 40).render("Configurações", True, COLORS["black"])
-        config = Button(pygame.image.load("src/imgs/background_buttom.png"), "Ligar/Desligar", 640, 320, 1)
+def config_sound(self, is_enabled):
+    title_font = pygame.font.Font("src/fonts/font.ttf", 40)
+    title = title_font.render("Configurações", True, COLORS["black"])
+    config_button = Button(pygame.image.load("src/imgs/background_buttom.png"), "Ligar/Desligar", 640, 320, 1)
 
-        self.__screen.fill(COLORS["primary"])
-        self.__screen.blit(title, (360, 50))
+    self.__screen.fill(COLORS["primary"])
+    self.__screen.blit(title, (360, 50))
+    config_button.update(self.__screen)
 
-        config.update(self.__screen)
+    while True:
+        self.__position_mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and config_button.checkForInput(self.__position_mouse):
+                if is_enabled:
+                    pygame.mixer.music.pause()
+                else:
+                    pygame.mixer.music.unpause()
 
-        running = True
-        while running:
-            self.__position_mouse = pygame.mouse.get_pos()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if config.checkForInput(self.__position_mouse):
-                        if is_enabled is True:
-                            pygame.mixer.music.pause()
-                        else:
-                            pygame.mixer.music.unpause()
-
-            pygame.display.update()
+        pygame.display.update()
 
     def instructions(self):
         title = pygame.font.Font("src/fonts/font.ttf", 40).render("Instruções", True, COLORS["black"])

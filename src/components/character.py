@@ -8,7 +8,12 @@ class Character(Sprite):
         self.life = 3
         self.points = 0
         self.__walking = False
+        self.heart_img = pygame.image.load('src/imgs/heart.png')
+        self.heart_rect = self.heart_img.get_rect()
+        self.heart_rect.center = (600, 720 - 80)
         self.__sprite = pygame.image.load("src/imgs/manPlayer.png")
+        self.jump_sound = pygame.mixer.Sound('src/sound/jump.wav')
+        self.jump_sound.set_volume(0.5)
         self.__sprite_list = []
         for index in range(4):
             character_image = self.__sprite.subsurface((index * 57.25, 85), (57.25, 73))
@@ -19,7 +24,6 @@ class Character(Sprite):
         self.image = self.__sprite_list[self.index_initial_character]
         self.rect = self.image.get_rect()
         self.rect.center = (80, 720 - 80)
-
         self.vel_y = 0
         self.is_jumping = False
         self.jump_start_time = 0
@@ -34,6 +38,7 @@ class Character(Sprite):
         self.index_initial_character += 1
 
     def to_jump(self):
+        self.jump_sound.play()
         if not self.is_jumping:
             self.is_jumping = True
             self.jump_start_time = pygame.time.get_ticks()
@@ -49,7 +54,7 @@ class Character(Sprite):
         if keys[pygame.K_SPACE]:
             self.to_jump()
 
-    def update(self):
+    def update(self):        
         if self.__walking is True:
             self.to_walk()
             self.image = self.__sprite_list[int(self.index_initial_character)]
