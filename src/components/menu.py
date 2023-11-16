@@ -22,8 +22,9 @@ class Menu():
         play = Button(pygame.image.load("src/imgs/background_buttom.png"), "Jogar", 640, 200, 0.7)
         instructions = Button(pygame.image.load("src/imgs/background_buttom.png"), "Instruções", 640, 320, 0.7)
         sound = Button(pygame.image.load("src/imgs/background_buttom.png"), "Configurações", 640, 440, 0.7)
+        ranking = Button(pygame.image.load("src/imgs/background_buttom.png"), "Ranking", 640, 560, 0.7)
 
-        self.__update_image([title, play, instructions, sound])
+        self.__update_image([title, play, instructions, sound, ranking])
         running = True
 
         while running:
@@ -39,5 +40,7 @@ class Menu():
                         Screens(self.__screen).instructions()
                     if sound.checkForInput(self.__position_mouse):
                         Screens(self.__screen).config_sound(is_enabled)
+                    if ranking.checkForInput(self.__position_mouse):
+                        Screens(self.__screen).ranking()
 
             pygame.display.update()
